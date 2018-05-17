@@ -15,6 +15,12 @@
 #Process command line parameters
 #TCP port
 PORT=$1
+client=$2
+client+=-cli
+echo $client
+daemon=$2
+daemon+=d
+echo $daemon
 
 #Color codes
 RED='\033[0;91m'
@@ -30,16 +36,16 @@ function delay { echo -e "${GREEN}Sleep for $1 seconds...${NC}"; sleep "$1"; }
 
 #Stop daemon if it's already running
 function stop_daemon {
-    if pgrep -x './$2d' > /dev/null; then
+    if pgrep -x './$daemon' > /dev/null; then
         echo -e "${YELLOW}Attempting to stop daemon${NC}"
-        ./$2-cli stop
+        ./$client stop
         delay 30
         if pgrep -x '$2' > /dev/null; then
             echo -e "${RED}daemon is still running!${NC} \a"
             echo -e "${RED}Attempting to kill...${NC}"
-            pkill ./$2d
+            pkill ./$daemon
             delay 30
-            if pgrep -x '$2d' > /dev/null; then
+            if pgrep -x '$daemon' > /dev/null; then
                 echo -e "${RED}Can't stop daemon! Reboot and try again...${NC} \a"
                 exit 2
             fi
@@ -98,9 +104,11 @@ mkdir ~/$2
 cd ~/$2
 wget $3
 unzip *.zip
+tar -xzvf *.gz
+rm *.gz
 rm *.zip
  
- # stop_daemon
+stop_daemon
  
  #Deploy masternode monitoring script
  #cp ~/reef/nodemonreef.sh /usr/local/bin
@@ -123,12 +131,12 @@ EOF
     sudo chmod 755 -R ~/.$2core/$2.conf
 
     #Starting daemon first time just to generate masternode private key
-    ./$2d -daemon
+    ./$daemon -daemon
     delay 30
 
     #Generate masternode private key
     echo -e "${YELLOW}Generating masternode private key...${NC}"
-    genkey=$(./$2-cli masternode genkey)
+    genkey=$(./$client masternode genkey)
     if [ -z "$genkey" ]; then
         echo -e "${RED}ERROR: Can not generate masternode private key.${NC} \a"
         echo -e "${RED}ERROR: Reboot VPS and try again or supply existing genkey as a parameter.${NC}"
@@ -156,7 +164,7 @@ masternodeprivkey=$genkey
 EOF
 
 #Finally, starting reef daemon with new .conf
-./$2d
+./$daemon
 delay 5
 
 #Setting auto start cron job for reefd
