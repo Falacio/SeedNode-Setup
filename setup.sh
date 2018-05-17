@@ -94,13 +94,13 @@ fi
 
  #Installing Daemon
 
-sudo mkdir ~/$2
-cd $2
+mkdir ~/$2
+cd ~/$2
 wget $3
 unzip *.zip
 rm *.zip
  
- stop_daemon
+ # stop_daemon
  
  #Deploy masternode monitoring script
  #cp ~/reef/nodemonreef.sh /usr/local/bin
