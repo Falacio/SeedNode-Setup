@@ -55,9 +55,9 @@ function stop_daemon {
 
 clear
 
-echo -e "${YELLOW}Masternode Setup Script V1.3 for Ubuntu 16.04 LTS${NC}"
-echo -e "${GREEN}Updating system and installing required packages...${NC}"
-sudo DEBIAN_FRONTEND=noninteractive apt-get update -y
+#echo -e "${YELLOW}Masternode Setup Script V1.3 for Ubuntu 16.04 LTS${NC}"
+#echo -e "${GREEN}Updating system and installing required packages...${NC}"
+#sudo DEBIAN_FRONTEND=noninteractive apt-get update -y
 
 # Determine primary public IP address
 dpkg -s dnsutils 2>/dev/null >/dev/null || sudo apt-get -y install dnsutils
