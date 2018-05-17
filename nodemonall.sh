@@ -4,9 +4,13 @@
 #Processing command line params
 client=$1
 client+=-cli
+dir=$1
+dir+=core
+cd $1
+
 if [ -z $2 ]; then dly=1; else dly=$2; fi   # Default refresh time is 1 sec
 
-datadir="/$USER/.$2core"   # Default datadir is /root/.coincore
+datadir="/$USER/.$dir"   # Default datadir is /root/.coincore
  
 # Install jq if it's not present
 dpkg -s jq 2>/dev/null >/dev/null || sudo apt-get -y install jq
