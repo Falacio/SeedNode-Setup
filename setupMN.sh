@@ -1,6 +1,6 @@
 #!/bin/bash
-# SeedNode - Masternode Setup Script V1.3 for Ubuntu 16.04 LTS
-# (c) 2018 by Dwigt007. Forked by Falacio.
+# SeedNode - Masternode Setup Script V2.0 for Ubuntu 16.04 LTS
+# (c) 2018 by Allroad. Forked by Falacio.
 #
 # Script will attempt to autodetect primary public IP address
 # and generate masternode private key unless specified in command line
@@ -17,10 +17,9 @@
 PORT=$1
 client=$2
 client+=-cli
-echo $client
 daemon=$2
 daemon+=d
-echo $daemon
+genkey=$3
 
 #Color codes
 RED='\033[0;91m'
@@ -33,25 +32,6 @@ function clear_stdin { while read -r -t 0; do read -r; done; }
 
 #Delay script execution for N seconds
 function delay { echo -e "${GREEN}Sleep for $1 seconds...${NC}"; sleep "$1"; }
-
-#Stop daemon if it's already running
-function stop_daemon {
-    if pgrep -x './$daemon' > /dev/null; then
-        echo -e "${YELLOW}Attempting to stop daemon${NC}"
-        ./$client stop
-        delay 30
-        if pgrep -x '$2' > /dev/null; then
-            echo -e "${RED}daemon is still running!${NC} \a"
-            echo -e "${RED}Attempting to kill...${NC}"
-            pkill ./$daemon
-            delay 30
-            if pgrep -x '$daemon' > /dev/null; then
-                echo -e "${RED}Can't stop daemon! Reboot and try again...${NC} \a"
-                exit 2
-            fi
-        fi
-    fi
-}
 
 clear
 
@@ -79,26 +59,7 @@ fi
 rpcuser=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 rpcpassword=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
-#Create 2GB swap file
-if grep -q "SwapTotal" /proc/meminfo; then
-    echo -e "${GREEN}Skipping disk swap configuration...${NC} \n"
-else
-    echo -e "${YELLOW}Creating 2GB disk swap file. \nThis may take a few minutes!${NC} \a"
-    touch /var/swap.img
-    chmod 600 swap.img
-    dd if=/dev/zero of=/var/swap.img bs=1024k count=2000
-    mkswap /var/swap.img 2> /dev/null
-    swapon /var/swap.img 2> /dev/null
-    if [ $? -eq 0 ]; then
-        echo '/var/swap.img none swap sw 0 0' >> /etc/fstab
-        echo -e "${GREEN}Swap was created successfully!${NC} \n"
-    else
-        echo -e "${RED}Operation not permitted! Optional swap was not created.${NC} \a"
-        rm /var/swap.img
-    fi
-fi
-
- #Installing Daemon
+#Installing Wallet files
 
 mkdir ~/$2
 cd ~/$2
@@ -107,8 +68,6 @@ unzip *.zip
 tar -xzvf *.gz
 rm *.gz
 rm *.zip
- 
-stop_daemon
  
  #Deploy masternode monitoring script
  #cp ~/reef/nodemonreef.sh /usr/local/bin
@@ -144,7 +103,7 @@ EOF
     fi
     
     #Stopping daemon to create .conf
-    stop_daemon
+    ./$client stop
     delay 30
 fi
 
@@ -265,6 +224,6 @@ Authors: Dwigt007 and Falacio
 "
 delay 30
 # Run nodemonreef.sh
-#ash nodemonreef.sh
+nodemonall $2
 
 # EOF
