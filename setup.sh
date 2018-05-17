@@ -168,7 +168,7 @@ EOF
 delay 5
 
 #Setting auto start cron job for reefd
-cronjob="@reboot sleep 30 && ./$2
+cronjob="@reboot sleep 30 && ./$daemon"
 crontab -l > tempcron
 if ! grep -q "$cronjob" tempcron; then
     echo -e "${GREEN}Configuring crontab job...${NC}"
