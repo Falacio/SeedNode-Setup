@@ -49,7 +49,7 @@ function stop_daemon {
 
 clear
 
-echo -e "${YELLOW}Reef Masternode Setup Script V1.3 for Ubuntu 16.04 LTS${NC}"
+echo -e "${YELLOW}Masternode Setup Script V1.3 for Ubuntu 16.04 LTS${NC}"
 echo -e "${GREEN}Updating system and installing required packages...${NC}"
 sudo DEBIAN_FRONTEND=noninteractive apt-get update -y
 
@@ -96,7 +96,7 @@ fi
 
 sudo mkdir ~/$2
 cd $2
-wget https://github.com/reefcoin-io/reefcore/releases/download/v0.6.0/reefcore_linux.zip
+wget $3
 unzip *.zip
 rm *.zip
  
