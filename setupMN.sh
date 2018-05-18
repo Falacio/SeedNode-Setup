@@ -69,7 +69,7 @@ tar -xzvf *.gz
 rm *.gz
 rm *.zip
 sudo chmod 755 -R ~/$2
-sudo chmod 755 ~/$2/methuselah*
+sudo chmod 755 ~/$2/$2*
 
  #Create datadir
  if [ ! -f ~/.$2core/$2.conf ]; then 
