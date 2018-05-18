@@ -83,7 +83,6 @@ if [ -z $genkey ]; then
     cat <<EOF > ~/.$2core/$2.conf
 rpcuser=$rpcuser
 rpcpassword=$rpcpassword
-echo -e "${YELLOW}Genkey provided. Adding${NC}"
 
 EOF
 
