@@ -19,7 +19,7 @@ client=$2
 client+=-cli
 daemon=$2
 daemon+=d
-genkey=$3
+genkey=$4
 
 #Color codes
 RED='\033[0;91m'
@@ -85,6 +85,8 @@ if [ -z $genkey ]; then
     cat <<EOF > ~/.$2core/$2.conf
 rpcuser=$rpcuser
 rpcpassword=$rpcpassword
+echo -e "${YELLOW}Genkey provided. Adding${NC}"
+
 EOF
 
     sudo chmod 755 -R ~/.$2core/$2.conf
