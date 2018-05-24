@@ -1,5 +1,5 @@
 #!/bin/bash
-# SeedNode - Masternode Setup Script V2.0 for Ubuntu 16.04 LTS
+# SeedNode - Masternode Setup Script V3.0 for Ubuntu 16.04 LTS
 # (c) 2018 by Allroad. Forked by Falacio.
 #
 # Script will attempt to autodetect primary public IP address
@@ -8,7 +8,7 @@
 # Usage:
 # bash setup.sh [port] [coin] [Release url]
 #
-# Example: Set up a Reef SeedNode at port 11058
+# Example: Set up a Reef SeedNode at port 10058
 # bash setup.sh 11058 reef https://github.com/reefcoin-io/reefcore/releases/download/v0.6.0/reefcore_linux.zip
 #
 
@@ -76,6 +76,8 @@ sudo service fail2ban restart
 
 sudo apt-get install ufw -y
 sudo apt-get update -y
+la -a
+sudo apt install unzip
 
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
@@ -84,6 +86,9 @@ sudo ufw allow $PORT/tcp
 echo -e "${YELLOW}"
 sudo ufw --force enable
 echo -e "${NC}"
+
+
+
 
 #Generating Random Password for redend JSON RPC
 rpcuser=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
